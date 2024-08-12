@@ -25,7 +25,6 @@ import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/package_strings.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
-import 'package:chatview/src/widgets/reply_message_view.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
@@ -209,14 +208,6 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                                 onPressed: onCloseTap,
                                               ),
                                             ],
-                                          ),
-                                          ReplyMessageView(
-                                            message: state,
-                                            customMessageReplyViewBuilder: widget
-                                                .messageConfig
-                                                ?.customMessageReplyViewBuilder,
-                                            sendMessageConfig:
-                                                widget.sendMessageConfig,
                                           ),
                                         ],
                                       ),

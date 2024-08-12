@@ -28,7 +28,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
-import 'reply_popup_widget.dart';
 
 class ChatListWidget extends StatefulWidget {
   const ChatListWidget({
@@ -188,23 +187,8 @@ class _ChatListWidgetState extends State<ChatListWidget>
                         featureActiveConfig?.enableSwipeToSeeTime ?? true,
                     assignReplyMessage: widget.assignReplyMessage,
                     replyMessage: widget.replyMessage,
-                    onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        chatViewIW?.reactionPopupKey.currentState
-                            ?.refreshWidget(
-                          message: message,
-                          xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate,
-                        );
-                        chatViewIW?.showPopUp.value = true;
-                      }
-                      if (featureActiveConfig?.enableReplySnackBar ?? false) {
-                        _showReplyPopup(
-                          message: message,
-                          sentByCurrentUser: message.sentBy == currentUser?.id,
-                        );
-                      }
-                    },
+                    onChatBubbleLongPress:
+                        (yCoordinate, xCoordinate, message) {},
                     onChatListTap: _onChatListTap,
                     showTypingIndicator: showTypingIndicator,
                     chatBackgroundConfig: widget.chatBackgroundConfig,
@@ -233,58 +217,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
       widget.loadMoreData!()
           .whenComplete(() => _isNextPageLoading.value = false);
     }
-  }
-
-  void _showReplyPopup({
-    required Message message,
-    required bool sentByCurrentUser,
-  }) {
-    final replyPopup = chatListConfig.replyPopupConfig;
-    ScaffoldMessenger.of(context)
-      ..clearSnackBars()
-      ..showSnackBar(
-        SnackBar(
-          duration: const Duration(hours: 1),
-          backgroundColor: replyPopup?.backgroundColor ?? Colors.white,
-          content: replyPopup?.replyPopupBuilder != null
-              ? replyPopup!.replyPopupBuilder!(message, sentByCurrentUser)
-              : ReplyPopupWidget(
-                  buttonTextStyle: replyPopup?.buttonTextStyle,
-                  topBorderColor: replyPopup?.topBorderColor,
-                  onMoreTap: () {
-                    _onChatListTap();
-                    replyPopup?.onMoreTap?.call(
-                      message,
-                      sentByCurrentUser,
-                    );
-                  },
-                  onReportTap: () {
-                    _onChatListTap();
-                    replyPopup?.onReportTap?.call(
-                      message,
-                    );
-                  },
-                  onUnsendTap: () {
-                    _onChatListTap();
-                    replyPopup?.onUnsendTap?.call(
-                      message,
-                    );
-                  },
-                  onReplyTap: () {
-                    widget.assignReplyMessage(message);
-                    if (featureActiveConfig?.enableReactionPopup ?? false) {
-                      chatViewIW?.showPopUp.value = false;
-                    }
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    if (replyPopup?.onReplyTap != null) {
-                      replyPopup?.onReplyTap!(message);
-                    }
-                  },
-                  sentByCurrentUser: sentByCurrentUser,
-                ),
-          padding: EdgeInsets.zero,
-        ),
-      ).closed;
   }
 
   void _onChatListTap() {

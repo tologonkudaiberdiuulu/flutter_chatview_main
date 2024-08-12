@@ -53,8 +53,6 @@ class MessageTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatBackgroundConfig = context.chatListConfig.chatBackgroundConfig;
-    final messageTimeIconColor =
-        chatBackgroundConfig.messageTimeIconColor ?? Colors.black;
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
@@ -62,21 +60,6 @@ class MessageTimeWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: messageTimeIconColor,
-                ),
-              ),
-              child: Icon(
-                isCurrentUser ? Icons.arrow_forward : Icons.arrow_back,
-                size: 10,
-                color: messageTimeIconColor,
-              ),
-            ),
-            const SizedBox(width: 4),
             Text(
               messageTime.getTimeFromDateTime,
               style: chatBackgroundConfig.messageTimeTextStyle ??

@@ -37,7 +37,6 @@ class Data {
       message: "That's fine",
       createdAt: DateTime.now(),
       sentBy: '2',
-      reaction: Reaction(reactions: ['\u{2764}'], reactedUserIds: ['1']),
       status: MessageStatus.read,
     ),
     Message(
@@ -59,17 +58,7 @@ class Data {
       message: "https://bit.ly/3JHS2Wl",
       createdAt: DateTime.now(),
       sentBy: '2',
-      reaction: Reaction(
-        reactions: ['\u{2764}', '\u{1F44D}', '\u{1F44D}'],
-        reactedUserIds: ['2', '3', '4'],
-      ),
       status: MessageStatus.read,
-      replyMessage: const ReplyMessage(
-        message: "Can you write the time and place of the meeting?",
-        replyTo: '1',
-        replyBy: '2',
-        messageId: '4',
-      ),
     ),
     Message(
       id: '9',
@@ -77,14 +66,6 @@ class Data {
       createdAt: DateTime.now(),
       sentBy: '1',
       status: MessageStatus.read,
-      reaction: Reaction(
-        reactions: [
-          '\u{2764}',
-          '\u{2764}',
-          '\u{2764}',
-        ],
-        reactedUserIds: ['2', '3', '4'],
-      ),
     ),
     Message(
       id: '10',
@@ -92,10 +73,6 @@ class Data {
       status: MessageStatus.read,
       createdAt: DateTime.now(),
       sentBy: '1',
-      reaction: Reaction(
-        reactions: ['\u{2764}', '\u{2764}', '\u{2764}', '\u{2764}'],
-        reactedUserIds: ['2', '4', '3', '1'],
-      ),
     ),
     Message(
       id: '11',
@@ -103,7 +80,6 @@ class Data {
       createdAt: DateTime.now(),
       messageType: MessageType.image,
       sentBy: '1',
-      reaction: Reaction(reactions: ['\u{2764}'], reactedUserIds: ['2']),
       status: MessageStatus.read,
     ),
     Message(

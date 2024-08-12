@@ -20,16 +20,11 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import '../utils/constants/constants.dart';
-import 'image_message_view.dart';
-import 'message_time_widget.dart';
 import 'text_message_view.dart';
-import 'reaction_widget.dart';
-import 'voice_message_view.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({
@@ -49,6 +44,9 @@ class MessageView extends StatefulWidget {
     this.messageConfig,
     this.onMaxDuration,
     this.controller,
+    required this.chatTime,
+    this.chatUser,
+    this.senderNameTextStyle,
   }) : super(key: key);
 
   /// Provides message instance of chat.
@@ -95,6 +93,12 @@ class MessageView extends StatefulWidget {
 
   final Function(int)? onMaxDuration;
 
+  final Widget chatTime;
+
+  final ChatUser? chatUser;
+
+  final TextStyle? senderNameTextStyle;
+
   @override
   State<MessageView> createState() => _MessageViewState();
 }
@@ -106,6 +110,8 @@ class _MessageViewState extends State<MessageView>
   MessageConfiguration? get messageConfig => widget.messageConfig;
 
   bool get isLongPressEnable => widget.isLongPressEnable;
+
+  bool get isMessageBySender => widget.isMessageBySender;
 
   @override
   void initState() {
@@ -170,70 +176,48 @@ class _MessageViewState extends State<MessageView>
         children: [
           (() {
                 if (message.isAllEmoji) {
-                  return Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Padding(
-                        padding: emojiMessageConfiguration?.padding ??
-                            EdgeInsets.fromLTRB(
-                              leftPadding2,
-                              4,
-                              leftPadding2,
-                              widget.message.reaction.reactions.isNotEmpty
-                                  ? 14
-                                  : !messageTimePositionType.isOnRightSwipe
-                                      ? 20
-                                      : 0,
+                  return Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.sizeOf(context).width * 0.75,
+                      minWidth: MediaQuery.sizeOf(context).width * .3,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    margin: const EdgeInsets.fromLTRB(5, 0, 6, 2),
+                    decoration: BoxDecoration(
+                      color: _color,
+                      borderRadius: _borderRadius(message),
+                    ),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Padding(
+                          padding: emojiMessageConfiguration?.padding ??
+                              EdgeInsets.fromLTRB(
+                                leftPadding2,
+                                4,
+                                leftPadding2,
+                                widget.message.reaction.reactions.isNotEmpty
+                                    ? 14
+                                    : !messageTimePositionType.isOnRightSwipe
+                                        ? 20
+                                        : 0,
+                              ),
+                          child: Transform.scale(
+                            scale: widget.shouldHighlight
+                                ? widget.highlightScale
+                                : 1.0,
+                            child: Text(
+                              message,
+                              style: emojiMessageConfiguration?.textStyle ??
+                                  const TextStyle(fontSize: 30),
                             ),
-                        child: Transform.scale(
-                          scale: widget.shouldHighlight
-                              ? widget.highlightScale
-                              : 1.0,
-                          child: Text(
-                            message,
-                            style: emojiMessageConfiguration?.textStyle ??
-                                const TextStyle(fontSize: 30),
                           ),
                         ),
-                      ),
-                      if (widget.message.reaction.reactions.isNotEmpty)
-                        ReactionWidget(
-                          reaction: widget.message.reaction,
-                          messageReactionConfig:
-                              messageConfig?.messageReactionConfig,
-                          isMessageBySender: widget.isMessageBySender,
-                        ),
-                      if (!messageTimePositionType.isOnRightSwipe &&
-                          !messageTimePositionType.isDisable &&
-                          !messageTimePositionType.isOutSideChatBubbleAtTop)
-                        Positioned(
-                          bottom: widget.message.reaction.reactions.isNotEmpty
-                              ? -12
-                              : 5,
-                          right: widget.isMessageBySender ? 10 : null,
-                          left: widget.isMessageBySender ? null : 10,
-                          child: messageConfig?.messageDateTimeBuilder
-                                  ?.call(widget.message.createdAt) ??
-                              MessageTimeWidget(
-                                isCurrentUser: widget.isMessageBySender,
-                                messageTime: widget.message.createdAt,
-                                messageTimeTextStyle:
-                                    messageConfig?.messageTimeTextStyle,
-                              ),
-                        ),
-                    ],
-                  );
-                } else if (widget.message.messageType.isImage) {
-                  return ImageMessageView(
-                    message: widget.message,
-                    isMessageBySender: widget.isMessageBySender,
-                    imageMessageConfig: messageConfig?.imageMessageConfig,
-                    messageReactionConfig: messageConfig?.messageReactionConfig,
-                    highlightImage: widget.shouldHighlight,
-                    highlightScale: widget.highlightScale,
-                    messageDateTimeBuilder:
-                        messageConfig?.messageDateTimeBuilder,
-                    messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
+                      ],
+                    ),
                   );
                 } else if (widget.message.messageType.isText) {
                   return TextMessageView(
@@ -248,20 +232,9 @@ class _MessageViewState extends State<MessageView>
                     messageDateTimeBuilder:
                         messageConfig?.messageDateTimeBuilder,
                     messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
-                  );
-                } else if (widget.message.messageType.isVoice) {
-                  return VoiceMessageView(
-                    screenWidth: MediaQuery.of(context).size.width,
-                    message: widget.message,
-                    config: messageConfig?.voiceMessageConfig,
-                    onMaxDuration: widget.onMaxDuration,
-                    isMessageBySender: widget.isMessageBySender,
-                    messageReactionConfig: messageConfig?.messageReactionConfig,
-                    inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
-                    outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
-                    messageDateTimeBuilder:
-                        messageConfig?.messageDateTimeBuilder,
-                    messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
+                    chatUser: widget.chatUser,
+                    senderNameTextStyle:
+                        widget.inComingChatBubbleConfig?.senderNameTextStyle,
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {
@@ -269,36 +242,6 @@ class _MessageViewState extends State<MessageView>
                 }
               }()) ??
               const SizedBox(),
-          Padding(
-            padding: EdgeInsets.only(
-              top: messageTimePositionType.isOutSideChatBubbleAtBottom ? 8 : 0,
-            ),
-            child: ValueListenableBuilder(
-              valueListenable: widget.message.statusNotifier,
-              builder: (context, value, child) {
-                if (widget.isMessageBySender &&
-                    widget.controller?.initialMessageList.last.id ==
-                        widget.message.id &&
-                    widget.message.status == MessageStatus.read) {
-                  if (ChatViewInheritedWidget.of(context)
-                          ?.featureActiveConfig
-                          .lastSeenAgoBuilderVisibility ??
-                      true) {
-                    return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
-                            ?.lastSeenAgoBuilder
-                            ?.call(
-                                widget.message,
-                                applicationDateFormatter(
-                                    widget.message.createdAt)) ??
-                        lastSeenAgoBuilder(widget.message,
-                            applicationDateFormatter(widget.message.createdAt));
-                  }
-                  return const SizedBox();
-                }
-                return const SizedBox();
-              },
-            ),
-          )
         ],
       ),
     );
@@ -317,4 +260,21 @@ class _MessageViewState extends State<MessageView>
     _animationController?.dispose();
     super.dispose();
   }
+
+  Color get _color =>
+      isMessageBySender ? const Color(0xFF6330F4) : const Color(0xFFF2F7FB);
+
+  BorderRadiusGeometry _borderRadius(String message) => isMessageBySender
+      ? const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(0),
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        )
+      : const BorderRadius.only(
+          topLeft: Radius.circular(0),
+          topRight: Radius.circular(12),
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        );
 }

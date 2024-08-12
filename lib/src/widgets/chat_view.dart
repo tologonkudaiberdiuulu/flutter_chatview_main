@@ -19,17 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:io';
-
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/inherited_widgets/configurations_inherited_widgets.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatview_state_widget.dart';
-import 'package:chatview/src/widgets/reaction_popup.dart';
 import 'package:chatview/src/widgets/suggestions/suggestions_config_inherited_widget.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
 import '../values/custom_time_messages.dart';
@@ -306,31 +302,11 @@ class _ChatViewState extends State<ChatView>
                   ],
                 ),
               ),
-              if (featureActiveConfig.enableReactionPopup)
-                ValueListenableBuilder<bool>(
-                  valueListenable: context.chatViewIW!.showPopUp,
-                  builder: (_, showPopupValue, child) {
-                    return ReactionPopup(
-                      key: context.chatViewIW!.reactionPopupKey,
-                      onTap: () => _onChatListTap(context),
-                      showPopUp: showPopupValue,
-                    );
-                  },
-                ),
             ],
           );
         }),
       ),
     );
-  }
-
-  void _onChatListTap(BuildContext context) {
-    widget.onChatListTap?.call();
-    if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
-      FocusScope.of(context).unfocus();
-    }
-    context.chatViewIW?.showPopUp.value = false;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
   void _onSendTap(

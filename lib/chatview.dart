@@ -24,7 +24,6 @@ library chatview;
 
 export 'src/widgets/chat_view.dart';
 export 'src/models/models.dart';
-export 'src/widgets/chat_view_appbar.dart';
 export 'src/values/enumeration.dart';
 export 'src/controller/chat_controller.dart';
 export 'src/values/typedefs.dart';

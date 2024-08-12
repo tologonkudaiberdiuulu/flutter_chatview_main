@@ -27,7 +27,6 @@ import 'package:chatview/src/models/models.dart';
 import '../utils/constants/constants.dart';
 import '../values/typedefs.dart';
 import 'link_preview.dart';
-import 'reaction_widget.dart';
 
 class TextMessageView extends StatelessWidget {
   const TextMessageView({
@@ -42,6 +41,8 @@ class TextMessageView extends StatelessWidget {
     this.highlightColor,
     this.messageDateTimeBuilder,
     this.messageTimeTextStyle,
+    this.chatUser,
+    this.senderNameTextStyle,
   }) : super(key: key);
 
   /// Represents current message is sent by current user.
@@ -74,53 +75,87 @@ class TextMessageView extends StatelessWidget {
   /// Used to give text style of message's time of a chat bubble
   final TextStyle? messageTimeTextStyle;
 
+  final ChatUser? chatUser;
+
+  final TextStyle? senderNameTextStyle;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final textMessage = message.message;
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          constraints: BoxConstraints(
-              maxWidth: chatBubbleMaxWidth ??
-                  MediaQuery.of(context).size.width * 0.75),
-          padding: _padding ??
-              const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-          margin: _margin ??
-              EdgeInsets.fromLTRB(
-                  5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
-          decoration: BoxDecoration(
-            color: highlightMessage ? highlightColor : _color,
-            borderRadius: _borderRadius(textMessage),
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: chatBubbleMaxWidth ?? MediaQuery.sizeOf(context).width * 0.75,
+        minWidth: MediaQuery.sizeOf(context).width * .3,
+      ),
+      padding: _padding ??
+          const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 10,
           ),
-          child: textMessage.isUrl
-              ? LinkPreview(
-                  linkPreviewConfig: _linkPreviewConfig,
-                  url: textMessage,
-                  message: message,
-                  isMessageBySender: isMessageBySender,
-                )
-              : Text(
-                  textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
+      margin: _margin ??
+          EdgeInsets.fromLTRB(
+              5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
+      decoration: BoxDecoration(
+        color: highlightMessage ? highlightColor : _color,
+        borderRadius: _borderRadius(textMessage),
+      ),
+      child: textMessage.isUrl
+          ? LinkPreview(
+              linkPreviewConfig: _linkPreviewConfig,
+              url: textMessage,
+              message: message,
+              isMessageBySender: isMessageBySender,
+            )
+          : IntrinsicWidth(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        chatUser?.name ?? '',
+                        style: senderNameTextStyle ??
+                            TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: isMessageBySender
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                       ),
-                ),
-        ),
-        if (message.reaction.reactions.isNotEmpty)
-          ReactionWidget(
-            key: key,
-            isMessageBySender: isMessageBySender,
-            reaction: message.reaction,
-            messageReactionConfig: messageReactionConfig,
-          ),
-      ],
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    textMessage,
+                    style: _textStyle ??
+                        textTheme.bodyMedium!.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color:
+                              isMessageBySender ? Colors.white : Colors.black,
+                        ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        DateTime.now().getTimeFromDateTime,
+                        style: TextStyle(
+                          color: isMessageBySender
+                              ? Colors.grey.shade400
+                              : Colors.grey,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
     );
   }
 
@@ -142,15 +177,21 @@ class TextMessageView extends StatelessWidget {
 
   BorderRadiusGeometry _borderRadius(String message) => isMessageBySender
       ? outgoingChatBubbleConfig?.borderRadius ??
-          (message.length < 37
-              ? BorderRadius.circular(replyBorderRadius1)
-              : BorderRadius.circular(replyBorderRadius2))
+          const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(0),
+            bottomLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          )
       : inComingChatBubbleConfig?.borderRadius ??
-          (message.length < 29
-              ? BorderRadius.circular(replyBorderRadius1)
-              : BorderRadius.circular(replyBorderRadius2));
+          const BorderRadius.only(
+            topLeft: Radius.circular(0),
+            topRight: Radius.circular(12),
+            bottomLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          );
 
   Color get _color => isMessageBySender
-      ? outgoingChatBubbleConfig?.color ?? Colors.purple
-      : inComingChatBubbleConfig?.color ?? Colors.grey.shade500;
+      ? outgoingChatBubbleConfig?.color ?? const Color(0xFF6330F4)
+      : inComingChatBubbleConfig?.color ?? const Color(0xFFF2F7FB);
 }
