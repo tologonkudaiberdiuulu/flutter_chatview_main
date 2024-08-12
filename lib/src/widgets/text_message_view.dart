@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 
-import '../utils/constants/constants.dart';
 import '../values/typedefs.dart';
 import 'link_preview.dart';
 
@@ -111,20 +110,21 @@ class TextMessageView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        chatUser?.name ?? '',
-                        style: senderNameTextStyle ??
-                            TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: isMessageBySender
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                      ),
-                    ],
-                  ),
+                  if (!isMessageBySender)
+                    Row(
+                      children: [
+                        Text(
+                          chatUser?.name ?? '',
+                          style: senderNameTextStyle ??
+                              TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: isMessageBySender
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                        ),
+                      ],
+                    ),
                   const SizedBox(height: 4),
                   Text(
                     textMessage,
@@ -138,7 +138,6 @@ class TextMessageView extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    // mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         DateTime.now().getTimeFromDateTime,
