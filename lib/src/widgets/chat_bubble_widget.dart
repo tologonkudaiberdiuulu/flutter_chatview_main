@@ -129,22 +129,23 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     return Stack(
       children: [
         if (featureActiveConfig?.enableSwipeToSeeTime ?? true) ...[
-          Visibility(
-            visible: widget.slideAnimation?.value.dx == 0.0 ? false : true,
-            child: Positioned.fill(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: MessageTimeWidget(
-                  messageDateTimeBuilder:
-                      widget.messageConfig?.messageDateTimeBuilder,
-                  messageTime: widget.message.createdAt,
-                  isCurrentUser: isMessageBySender,
-                  messageTimeIconColor: widget.messageTimeIconColor,
-                  messageTimeTextStyle: widget.messageTimeTextStyle,
-                ),
+          // Visibility(
+          //   visible: widget.slideAnimation?.value.dx == 0.0 ? false : true,
+          //   child:
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: MessageTimeWidget(
+                messageDateTimeBuilder:
+                    widget.messageConfig?.messageDateTimeBuilder,
+                messageTime: widget.message.createdAt,
+                isCurrentUser: isMessageBySender,
+                messageTimeIconColor: widget.messageTimeIconColor,
+                messageTimeTextStyle: widget.messageTimeTextStyle,
               ),
             ),
           ),
+          // ),
           SlideTransition(
             position: widget.slideAnimation!,
             child: _chatBubbleWidget(messagedUser),
