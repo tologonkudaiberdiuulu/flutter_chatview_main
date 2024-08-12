@@ -400,12 +400,13 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   Widget _groupSeparator(DateTime createdAt) {
-    return featureActiveConfig?.enableChatSeparator ?? false
+    return featureActiveConfig?.enableChatSeparator ?? true
         ? _GroupSeparatorBuilder(
             separator: createdAt,
             defaultGroupSeparatorConfig:
                 chatBackgroundConfig.defaultGroupSeparatorConfig,
             groupSeparatorBuilder: chatBackgroundConfig.groupSeparatorBuilder,
+            groupHeaderConfig: chatBackgroundConfig.groupHeaderConfiguration,
           )
         : const SizedBox.shrink();
   }
@@ -453,10 +454,12 @@ class _GroupSeparatorBuilder extends StatelessWidget {
     required this.separator,
     this.groupSeparatorBuilder,
     this.defaultGroupSeparatorConfig,
+    this.groupHeaderConfig,
   }) : super(key: key);
   final DateTime separator;
   final StringWithReturnWidget? groupSeparatorBuilder;
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;
+  final GroupHeaderConfiguration? groupHeaderConfig;
 
   @override
   Widget build(BuildContext context) {
@@ -465,6 +468,7 @@ class _GroupSeparatorBuilder extends StatelessWidget {
         : ChatGroupHeader(
             day: separator,
             groupSeparatorConfig: defaultGroupSeparatorConfig,
+            groupHeaderConfig: groupHeaderConfig,
           );
   }
 }

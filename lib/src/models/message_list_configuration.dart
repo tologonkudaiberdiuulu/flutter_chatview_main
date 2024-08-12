@@ -64,6 +64,9 @@ class ChatBackgroundConfiguration {
   /// Used to give configuration of default chat separator widget.
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;
 
+  /// Used to give configuration of separator header text.
+  final GroupHeaderConfiguration? groupHeaderConfiguration;
+
   /// Used for giving widget while data is loading.
   final Widget? loadingWidget;
 
@@ -90,6 +93,7 @@ class ChatBackgroundConfiguration {
     this.loadingWidget,
     this.messageTimeAnimationCurve = Curves.decelerate,
     this.messageSorter,
+    this.groupHeaderConfiguration,
   });
 }
 
@@ -105,9 +109,29 @@ class DefaultGroupSeparatorConfiguration {
   /// e.g. May 21, 2024
   final String chatSeparatorDatePattern;
 
+  /// Replaces default today separation
+  final String? todayText;
+
+  /// Replaces default yesterday separation
+  final String? yesterdayText;
+
   const DefaultGroupSeparatorConfiguration({
     this.padding,
     this.textStyle,
     this.chatSeparatorDatePattern = defaultChatSeparatorDatePattern,
+    this.todayText,
+    this.yesterdayText,
+  });
+}
+
+class GroupHeaderConfiguration {
+  final String? todayText;
+
+  /// Replaces default yesterday separation
+  final String? yesterdayText;
+
+  const GroupHeaderConfiguration({
+    this.todayText,
+    this.yesterdayText,
   });
 }

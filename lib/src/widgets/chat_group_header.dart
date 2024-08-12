@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/utils/package_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/extensions/extensions.dart';
@@ -30,6 +31,7 @@ class ChatGroupHeader extends StatelessWidget {
     Key? key,
     required this.day,
     this.groupSeparatorConfig,
+    this.groupHeaderConfig,
   }) : super(key: key);
 
   /// Provides day of started chat.
@@ -38,16 +40,27 @@ class ChatGroupHeader extends StatelessWidget {
   /// Provides configuration for separator upon date wise chat.
   final DefaultGroupSeparatorConfiguration? groupSeparatorConfig;
 
+  /// Provides configuration for separator upon date wise chat.
+  final GroupHeaderConfiguration? groupHeaderConfig;
+
   @override
   Widget build(BuildContext context) {
+    String dayHeader = day.getDay(
+      groupSeparatorConfig?.chatSeparatorDatePattern ??
+          defaultChatSeparatorDatePattern,
+    );
+    if (dayHeader == PackageStrings.today &&
+        groupHeaderConfig?.todayText != null) {
+      dayHeader = groupHeaderConfig!.todayText!;
+    } else if (dayHeader == PackageStrings.yesterday &&
+        groupHeaderConfig?.yesterdayText != null) {
+      dayHeader = groupHeaderConfig!.yesterdayText!;
+    }
     return Padding(
       padding: groupSeparatorConfig?.padding ??
           const EdgeInsets.symmetric(vertical: 12),
       child: Text(
-        day.getDay(
-          groupSeparatorConfig?.chatSeparatorDatePattern ??
-              defaultChatSeparatorDatePattern,
-        ),
+        dayHeader,
         textAlign: TextAlign.center,
         style: groupSeparatorConfig?.textStyle ?? const TextStyle(fontSize: 17),
       ),
