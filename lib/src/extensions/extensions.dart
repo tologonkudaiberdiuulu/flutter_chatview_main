@@ -45,7 +45,8 @@ extension TimeDifference on DateTime {
   }
 
   String get getDateFromDateTime {
-    final DateFormat formatter = DateFormat(dateFormat);
+    final DateFormat formatter = DateFormat('HH:mm');
+    // final DateFormat formatter = DateFormat(dateFormat);
     return formatter.format(this);
   }
 

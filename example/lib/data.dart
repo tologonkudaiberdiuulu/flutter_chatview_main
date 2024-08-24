@@ -7,7 +7,7 @@ class Data {
     Message(
       id: '1',
       message: "Hi!",
-      createdAt: DateTime.now(),
+      createdAt: DateTime.now().subtract(const Duration(days: 3)),
       sentBy: '1', // userId of who sends the message
       status: MessageStatus.read,
     ),
@@ -63,7 +63,7 @@ class Data {
     Message(
       id: '9',
       message: "Done",
-      createdAt: DateTime.now(),
+      createdAt: DateTime.now().subtract(const Duration(hours: 2)),
       sentBy: '1',
       status: MessageStatus.read,
     ),
@@ -71,7 +71,7 @@ class Data {
       id: '10',
       message: "Thank you!!",
       status: MessageStatus.read,
-      createdAt: DateTime.now(),
+      createdAt: DateTime.now().subtract(const Duration(hours: 4)),
       sentBy: '1',
     ),
     Message(
