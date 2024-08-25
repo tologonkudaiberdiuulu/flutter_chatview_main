@@ -16,6 +16,7 @@ class FeatureActiveConfig {
     this.receiptsBuilderVisibility = true,
     this.enableOtherUserName = true,
     this.messageTimePositionType = MessageTimePositionType.onRightSwipe,
+    this.enableScrollToBottomButton = false,
   });
 
   /// Used for enable/disable swipe to reply.
@@ -60,4 +61,7 @@ class FeatureActiveConfig {
   /// Controls the Position of message created time.
   /// default value: onRightSwipe
   final MessageTimePositionType messageTimePositionType;
+
+  /// Used for enable/disable Scroll To Bottom Button.
+  final bool enableScrollToBottomButton;
 }

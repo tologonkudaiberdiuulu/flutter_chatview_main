@@ -160,3 +160,13 @@ enum MessageTimePositionType {
 
   bool get isDisable => this == disable;
 }
+
+enum ScrollButtonAlignment {
+  left(Alignment.bottomLeft),
+  center(Alignment.bottomCenter),
+  right(Alignment.bottomRight);
+
+  const ScrollButtonAlignment(this.alignment);
+
+  final Alignment alignment;
+}

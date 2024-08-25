@@ -28,6 +28,7 @@ import 'package:chatview/src/widgets/chatview_state_widget.dart';
 import 'package:chatview/src/widgets/suggestions/suggestions_config_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
+import '../models/scroll_to_bottom_button_config.dart';
 import '../values/custom_time_messages.dart';
 import 'send_message_widget.dart';
 
@@ -59,6 +60,7 @@ class ChatView extends StatefulWidget {
     this.replyMessageBuilder,
     this.replySuggestionsConfig,
     this.showTypingIndicator = false,
+    this.scrollToBottomButtonConfig,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -146,6 +148,9 @@ class ChatView extends StatefulWidget {
   /// Allow user to show typing indicator.
   final bool showTypingIndicator;
 
+  /// Provides a configuration for scroll to bottom button config
+  final ScrollToBottomButtonConfig? scrollToBottomButtonConfig;
+
   static void closeReplyMessageView(BuildContext context) {
     final state = context.findAncestorStateOfType<_ChatViewState>();
     if (state == null) return;
@@ -229,6 +234,8 @@ class _ChatViewState extends State<ChatView>
                         repliedMessageConfig: widget.repliedMessageConfig,
                         swipeToReplyConfig: widget.swipeToReplyConfig,
                         emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
+                        scrollToBottomButtonConfig:
+                            widget.scrollToBottomButtonConfig,
                         child: Stack(
                           children: [
                             if (chatViewState.isLoading)
