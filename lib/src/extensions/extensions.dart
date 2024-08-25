@@ -33,10 +33,10 @@ import '../utils/package_strings.dart';
 /// Extension for DateTime to get specific formats of dates and time.
 extension TimeDifference on DateTime {
   String getDay(String chatSeparatorDatePattern) {
-    final differenceInDays = difference(DateTime.now()).inDays;
-    if (differenceInDays == 0) {
+    final now = DateTime.now();
+    if (day == now.day && month == now.month && year == now.year) {
       return PackageStrings.today;
-    } else if (differenceInDays <= 1 && differenceInDays >= -1) {
+    } else if (day == now.day - 1 && month == now.month && year == now.year) {
       return PackageStrings.yesterday;
     } else {
       final DateFormat formatter = DateFormat(chatSeparatorDatePattern);

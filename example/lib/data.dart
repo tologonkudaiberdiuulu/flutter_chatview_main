@@ -7,7 +7,16 @@ class Data {
     Message(
       id: '1',
       message: "Hi!",
-      createdAt: DateTime.now().subtract(const Duration(days: 3)),
+      createdAt: DateTime.parse('2024-08-21T18:59:02'),
+      // createdAt: DateTime.now().subtract(const Duration(days: 3)),
+      sentBy: '1', // userId of who sends the message
+      status: MessageStatus.read,
+    ),
+    Message(
+      id: '1',
+      message: "It's test message",
+      createdAt: DateTime.parse('2024-08-21T19:25:02'),
+      // createdAt: DateTime.now().subtract(const Duration(days: 3)),
       sentBy: '1', // userId of who sends the message
       status: MessageStatus.read,
     ),
@@ -42,15 +51,17 @@ class Data {
     Message(
       id: '6',
       message: "When to go ?",
-      createdAt: DateTime.now(),
+      createdAt: DateTime.parse('2024-08-21T19:06:29'),
+      // createdAt: DateTime.now(),
       sentBy: '3',
       status: MessageStatus.read,
     ),
     Message(
       id: '7',
       message: "I guess Simform will reply",
-      createdAt: DateTime.now(),
-      sentBy: '4',
+      createdAt: DateTime.parse('2024-08-24T22:31:38'),
+      sentBy: '1',
+      // sentBy: '4',
       status: MessageStatus.read,
     ),
     // Message(
@@ -71,7 +82,8 @@ class Data {
       id: '10',
       message: "Thank you!!",
       status: MessageStatus.read,
-      createdAt: DateTime.now().subtract(const Duration(days: 2)),
+      createdAt: DateTime.parse('2024-08-25T19:22:56'),
+      // createdAt: DateTime.now().subtract(const Duration(days: 2)),
       sentBy: '1',
     ),
     // Message(
