@@ -133,6 +133,7 @@ class _ChatScreenState extends State<ChatScreen> {
             todayText: 'today',
             yesterdayText: 'yesterday',
           ),
+          sortEnable: true,
         ),
       ),
     );

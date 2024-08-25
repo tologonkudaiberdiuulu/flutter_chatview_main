@@ -140,7 +140,7 @@ class TextMessageView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        message.createdAt.getDateFromDateTime,
+                        message.createdAt.getReadTimeFromDateTime,
                         style: TextStyle(
                           color: isMessageBySender
                               ? Colors.grey.shade400

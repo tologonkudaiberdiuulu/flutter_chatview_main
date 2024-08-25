@@ -45,12 +45,12 @@ extension TimeDifference on DateTime {
   }
 
   String get getDateFromDateTime {
-    final DateFormat formatter = DateFormat('HH:mm');
-    // final DateFormat formatter = DateFormat(dateFormat);
+    final DateFormat formatter = DateFormat(dateFormat);
     return formatter.format(this);
   }
 
   String get getTimeFromDateTime => DateFormat.Hm().format(this);
+  String get getReadTimeFromDateTime => DateFormat('HH:mm').format(this);
 }
 
 /// Extension on String which implements different types string validations.
